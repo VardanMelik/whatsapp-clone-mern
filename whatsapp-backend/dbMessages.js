@@ -10,12 +10,13 @@ const whatsappSchema = mongoose.Schema({
         type: String
     },
     timestamp: {
-        type: Date,
-        default: Date
+        type: Date, 
+        default: Date.now
     },
     received: {
         type: Boolean,
     } 
 })
 
+// collection
 module.exports = mongoose.model('whatsappSchema', whatsappSchema);
