@@ -31,12 +31,13 @@ mongoose.connect(dbURL, {
 const db = mongoose.connection;
 db.once('open', () => {
   
-    const msgCollection = db.collection('whatsappSchema');
-    const changeStream = msgCollection.watch();
-
-    changeStream.on('change', (change) => {
-        console.log('Mongo Callback: ' + change);
-    })
+    const whatsappCollection = db.collection('whatsappschemas');
+    const changeStream = whatsappCollection.watch();
+   
+    changeStream.on("change", next => {
+        // process any change event
+        console.log("received a change to the collection: \t", next);
+      });
 })
 
 //Middleware
@@ -66,7 +67,7 @@ app.post('/messages/sync', (req, res) => {
 app.post('/messages/new', (req, res) => {
     dbMessage = req.body;
 
-    console.log(req.body);
+    //console.log(req.body);
     Message.create(dbMessage)
             .then(  data => res.send(data))
             .catch( err => res.status(500).send({

@@ -19,4 +19,4 @@ const whatsappSchema = mongoose.Schema({
 })
 
 // collection
-module.exports = mongoose.model('whatsappSchema', whatsappSchema);
+module.exports = mongoose.model('whatsappschemas', whatsappSchema);
