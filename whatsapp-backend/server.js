@@ -3,17 +3,20 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const Message = require('./dbMessages');
 const Pusher = require('pusher');
+const cors = require('cors');
 
 // app config
 const app = express();
 const port = process.env.port || 9000;
 
+app.use(cors());
+
 // Header
-app.use( (req, res, next) => {
+/*app.use( (req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Headers", "*");
     next();
-})
+})*/
 
 // Express Middleware
 //app.use(express.json())
