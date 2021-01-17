@@ -1,0 +1,7 @@
+DB user
+Login:    whatsapp-mern-admin-access
+Password: DPtKwdwQPphSHiPK
+
+Login:         crossnewssport@gmail.com
+Password: @Test@2020
+

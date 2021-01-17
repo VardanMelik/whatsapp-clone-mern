@@ -8,6 +8,13 @@ const Pusher = require('pusher');
 const app = express();
 const port = process.env.port || 9000;
 
+// Header
+app.use( (req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Headers", "*");
+    next();
+})
+
 // Express Middleware
 //app.use(express.json())
 
@@ -16,7 +23,8 @@ app.use(bodyParser.urlencoded({ extended: true}));
 app.use(bodyParser.json())
 
 // DB congif
-const dbURL = 'mongodb://localhost:27017/whatsapp';
+//const dbURL = 'mongodb://localhost:27017/whatsapp';
+const dbURL = 'mongodb+srv://whatsapp-mern-admin-access:DPtKwdwQPphSHiPK@cluster0.ponpo.mongodb.net/whatsappdb?retryWrites=true&w=majority'
 
 // Setup default mongoose connection
 mongoose.connect(dbURL, {
@@ -34,9 +42,20 @@ db.once('open', () => {
     const whatsappCollection = db.collection('whatsappschemas');
     const changeStream = whatsappCollection.watch();
    
-    changeStream.on("change", next => {
+    changeStream.on("change", change => {
         // process any change event
-        console.log("received a change to the collection: \t", next);
+        console.log( new Date(), change);
+        if (change.operationType === 'insert') {
+            const messageDetails = change.fullDocument;
+            pusher.trigger('message','inserted', {
+                name: messageDetails.user,
+                message: messageDetails.message,
+                timestamp: messageDetails.timestamp,
+                received: messageDetails.received
+            })
+        } else {
+            console.log('Error triggering Pusger');
+        }
       });
 })
 
